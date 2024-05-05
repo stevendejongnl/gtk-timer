@@ -1,4 +1,5 @@
 import gi
+import subprocess
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
 
@@ -7,24 +8,24 @@ class TimeSelection(Gtk.Grid):
     def __init__(self):
         super().__init__()
 
-        # SpinButton voor uren
+        # SpinButton for hours
         self.spin_hour = Gtk.SpinButton()
-        self.spin_hour.set_range(0, 23)  # Van 0 tot 23 uur
-        self.spin_hour.set_value(0)      # Startwaarde op 0 uur
+        self.spin_hour.set_range(0, 23)  
+        self.spin_hour.set_value(0)      
 
-        # SpinButton voor minuten
+        # SpinButton for minutes
         self.spin_minute = Gtk.SpinButton()
-        self.spin_minute.set_range(0, 59)   # Van 0 tot 59 minuten
-        self.spin_minute.set_increments(1, 5)  # Increment van 1, maar pagina-increment van 5
-        self.spin_minute.set_value(0)      # Startwaarde op 0 minuten
+        self.spin_minute.set_range(0, 59)   
+        self.spin_minute.set_increments(1, 5)  
+        self.spin_minute.set_value(0)      
 
-        # SpinButton voor seconden
+        # SpinButton for seconds
         self.spin_second = Gtk.SpinButton()
-        self.spin_second.set_range(0, 59)   # Van 0 tot 59 seconden
-        self.spin_second.set_increments(1, 10)  # Increment van 1, maar pagina-increment van 10
-        self.spin_second.set_value(0)      # Startwaarde op 0 seconden
+        self.spin_second.set_range(0, 59)   
+        self.spin_second.set_increments(1, 10)  
+        self.spin_second.set_value(0)      
 
-        # Grid layout voor de widgets
+        # Grid layout for the widgets
         self.attach(Gtk.Label(label="Hours:"), 0, 0, 1, 1)
         self.attach(self.spin_hour, 1, 0, 1, 1)
         self.attach(Gtk.Label(label="Minutes:"), 0, 1, 1, 1)
@@ -79,18 +80,23 @@ class MyWindow(Gtk.Window):
         self.label_time.set_label("{:02}:{:02}:{:02}".format(hours, minutes, seconds))
         if self.remaining_time <= 0:
             self.label_time.set_label("Time's up!")
-            self.show_notification("Timer Done!", "Your timer has finished.")
             self.present()  # Focus and bring the window to front
+            message = "Time's up!", "Your timer has finished."
+            self.show_notification(*message)
+            self.show_popup(*message)
             return False
         else:
             return True
 
-    def show_notification(self, title, message):
+    def show_popup(self, title, message):
         dialog = Gtk.MessageDialog(parent=self, flags=0, message_type=Gtk.MessageType.INFO,
                                    buttons=Gtk.ButtonsType.OK, text=title)
         dialog.format_secondary_text(message)
         dialog.run()
         dialog.destroy()
+
+    def show_notification(self, title, message):
+        subprocess.Popen(['notify-send', title, message])
 
 win = MyWindow()
 win.connect("destroy", Gtk.main_quit)

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Timer App
+Comment=A simple timer application
+Exec=main.py
+Icon=timer
+Type=Application
+Categories=Utility;
+Terminal=false
