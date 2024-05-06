@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Timer App
 Comment=A simple timer application
-Exec=main.py
+Exec=python /home/stevendejong/workspace/personal/gtk-timer/main.py
 Icon=timer
 Type=Application
 Categories=Utility;
