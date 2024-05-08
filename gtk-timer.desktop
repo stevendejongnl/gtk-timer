@@ -2,7 +2,7 @@
 Name=Timer App
 Comment=A simple timer application
 Exec=python /home/stevendejong/workspace/personal/gtk-timer/main.py
-Icon=timer
+Icon=clock
 Type=Application
 Categories=Utility;
 Terminal=false
